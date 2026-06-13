@@ -129,7 +129,7 @@ O arquivo `init-db.sql` cria os bancos `user-service`, `learning-service` e `tri
 
 ### 4. Acessando a aplicação
 
-Front-end:
+🖥️ Front-end:
 
 ```text
 http://localhost:3000
