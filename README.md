@@ -236,4 +236,4 @@ WHERE u.email = 'admmaster@teste.com';
 
 ## Corvis
 
-Este projeto é guiado pelo símbolo Corvis.
+Este projeto é guiado pelo mestre corvo!.

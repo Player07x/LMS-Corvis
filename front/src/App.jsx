@@ -9,6 +9,7 @@ import UserDrawer from './components/UserDrawer'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './contexts/AuthContext'
 import { useAuth } from './hooks/useAuth'
+import Conquistas from './pages/Conquistas'
 const PopulatePage = React.lazy(() => import('./pages/Populate'))
 
 function AppContent() {
@@ -40,6 +41,14 @@ function AppContent() {
                     <UserProfile />
                   </ProtectedRoute>
                 } 
+              />
+              <Route
+                path="/conquistas" //JP: Caminho para conquistas
+                element={
+                  <ProtectedRoute>
+                    <Conquistas/>
+                  </ProtectedRoute>
+                }
               />
               <Route path="/populate" element={<PopulatePage />} />
               <Route 
