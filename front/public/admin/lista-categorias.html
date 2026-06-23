@@ -1,33 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corvis Admin — Categorias</title>
+  <link rel="stylesheet" href="/admin/css/admin-theme.css">
 </head>
-<body class="bg-gray-200 content-center">
-    <div id="menu-container"></div>
-    <div>
-        <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 py-4 bg-green-700 text-white">
-            <h1 class="text-2xl font-bold">Categorias</h1>
-        </div>
-
-        <a href="forms/form-categoria.html"
-            class="fixed bottom-6 right-6 bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition duration-300"
-            title="Adicionar nova categoria">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-        </a>
-
-        <div id="categorias-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto py-6">
-        </div>
-
-    </div>
-    <script src="/admin/menu.js"></script>
-    <script src="/admin/js/categoria.js"></script>
+<body class="admin-body">
+  <div id="menu-container"></div>
+  <main class="admin-main">
+    <header class="admin-page-head">
+      <div>
+        <p class="admin-page-head__eyebrow">Organização da biblioteca</p>
+        <h1>Categorias</h1>
+        <p class="admin-page-head__description">Agrupe as trilhas por temas para facilitar a descoberta de conteúdos.</p>
+      </div>
+      <span class="admin-count" id="categorias-count">Carregando...</span>
+    </header>
+    <section id="categorias-list" class="admin-grid" aria-live="polite"></section>
+  </main>
+  <a href="/admin/forms/form-categoria.html" class="admin-fab" title="Adicionar nova categoria">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+    <span>Nova categoria</span>
+  </a>
+  <script src="/admin/menu.js"></script>
+  <script src="/admin/js/categoria.js"></script>
 </body>
 </html>
