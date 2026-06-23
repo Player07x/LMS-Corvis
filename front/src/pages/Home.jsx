@@ -9,6 +9,7 @@ import { useAuth } from '../hooks/useAuth'
 export default function Home() {
   const navigate = useNavigate()
   const { user, updateUserTotalXP } = useAuth()
+  const isAdmin = user?.role === 'ADMIN'
   const [trilhasWithProgress, setTrilhasWithProgress] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -129,7 +130,9 @@ export default function Home() {
         <hr className="border-t border-green-600/50 w-[97%] mx-auto mt-6" />
       </div>
       <ActionsBar 
-        onAdd={() => {}} 
+        showAdminActions={isAdmin}
+        onAdmin={() => window.location.assign('/admin/lista-trilhas.html')}
+        onAdd={() => window.location.assign('/admin/forms/form-trilha.html')}
         onFilter={() => {}} 
         onSort={() => {}} 
       />
