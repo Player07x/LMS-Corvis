@@ -1,37 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
-    <link rel="stylesheet" href="/admin/css/admin-theme.css?v=20260623-4">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Painel administrativo de trilhas do Corvis.">
+  <title>Corvis Admin — Trilhas</title>
+  <link rel="stylesheet" href="/admin/css/lista-trilhas.css?v=20260623-5">
 </head>
+<body>
+  <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
 
-<body class="bg-gray-200 content-center">
-    <div id="menu-container"></div>
-    <div>
-        <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 py-4 bg-green-700 text-white">
-            <h1 class="text-2xl font-bold">Trilhas</h1>
-        </div>
-
-        <a href="forms/form-trilha.html"
-            class="fixed bottom-6 right-6 bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition duration-300"
-            title="Adicionar nova trilha">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+  <div class="app">
+    <section class="workspace" aria-label="Área principal de administração">
+      <header class="topbar" aria-label="Navegação do painel administrativo">
+        <a class="brand" href="/admin/lista-trilhas.html" aria-label="Corvis Admin">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 11c3.1-4.7 8.3-6.7 14.4-5.9-.4 5.5-3.3 10.1-8.7 12.1-2.9-1.4-4.8-3.5-5.7-6.2Z"></path>
+              <path d="M9 12c2.2-1.1 4.1-2.9 5.5-5.3"></path>
+              <circle cx="15.5" cy="8.5" r=".8" fill="currentColor" stroke="none"></circle>
             </svg>
+          </span>
+          <span>Corvis Admin</span>
         </a>
 
-        <div id="trilhas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto py-6">
+        <div class="nav-scroll">
+          <nav class="main-nav" aria-label="Seções administrativas">
+            <a href="/admin/lista-trilhas.html" class="nav-item" aria-current="page">Trilhas</a>
+            <a href="/admin/lista-categorias.html" class="nav-item">Categorias</a>
+            <a href="/admin/lista-conquistas.html" class="nav-item">Conquistas</a>
+            <a href="/admin/lista-usuarios.html" class="nav-item">Usuários</a>
+            <a href="/admin/lista-administradores.html" class="nav-item">Administradores</a>
+          </nav>
         </div>
 
-    </div>
-    <script src="/admin/menu.js"></script>
-    <script src="/admin/js/trilha.js"></script>
-</body>
+        <div class="topbar-actions">
+          <button type="button" class="icon-button" id="focusSearchButton" aria-label="Pesquisar trilhas" title="Pesquisar trilhas">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
+          </button>
+          <a class="button button-primary" href="/admin/forms/form-trilha.html">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+            <span>Nova trilha</span>
+          </a>
+        </div>
+      </header>
 
+      <main id="conteudo-principal" class="content">
+        <a href="/" class="breadcrumb">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+          Ir para área do usuário
+        </a>
+
+        <section class="page-heading" aria-labelledby="pageTitle">
+          <div>
+            <p class="eyebrow">Gestão de conteúdo</p>
+            <h1 id="pageTitle">Trilhas de <span>estudo</span></h1>
+            <p>Organize os caminhos de aprendizagem, revise seus módulos e mantenha o catálogo claro para quem vai estudar.</p>
+          </div>
+          <div class="heading-summary" aria-label="Resumo das trilhas">
+            <span class="summary-chip"><strong id="totalTrails">0</strong> trilhas cadastradas</span>
+            <span class="summary-chip"><strong id="totalModules">0</strong> módulos no catálogo</span>
+          </div>
+        </section>
+
+        <section aria-labelledby="catalogHeading">
+          <h2 id="catalogHeading" class="visually-hidden">Catálogo de trilhas</h2>
+
+          <div class="control-bar">
+            <label class="search-field">
+              <span class="visually-hidden">Pesquisar trilhas</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
+              <input id="searchInput" type="search" placeholder="Pesquisar por nome, descrição ou módulo" autocomplete="off">
+            </label>
+
+            <label>
+              <span class="visually-hidden">Filtrar por categoria</span>
+              <select id="categoryFilter" class="filter-select" aria-label="Filtrar por categoria">
+                <option value="">Todas as categorias</option>
+              </select>
+            </label>
+
+            <label>
+              <span class="visually-hidden">Ordenar trilhas</span>
+              <select id="sortSelect" class="filter-select" aria-label="Ordenar trilhas">
+                <option value="recent">Ordem do catálogo</option>
+                <option value="name-asc">Nome: A–Z</option>
+                <option value="name-desc">Nome: Z–A</option>
+                <option value="modules-desc">Mais módulos primeiro</option>
+                <option value="modules-asc">Menos módulos primeiro</option>
+              </select>
+            </label>
+          </div>
+
+          <p class="result-message" id="resultMessage" aria-live="polite"></p>
+
+          <div class="trail-grid" id="trailGrid" aria-live="polite"></div>
+
+          <section class="empty-results" id="emptyResults" aria-labelledby="emptyTitle">
+            <h2 id="emptyTitle">Nenhuma trilha encontrada</h2>
+            <p>Tente usar outro termo de busca ou remover os filtros selecionados.</p>
+            <button class="button button-secondary" type="button" id="clearFiltersButton">Limpar filtros</button>
+          </section>
+        </section>
+      </main>
+    </section>
+
+    <aside class="profile-panel" aria-labelledby="adminProfileHeading">
+      <button class="collapse-button" type="button" id="collapseButton" aria-label="Recolher painel de perfil" title="Recolher painel">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+      </button>
+
+      <div class="profile-content">
+        <div class="profile-avatar" id="profileAvatar" aria-label="Avatar do administrador">
+          AD
+          <span class="role-badge" aria-label="Nível administrativo">1</span>
+        </div>
+        <p class="admin-role">Administrador</p>
+        <h2 id="adminProfileHeading">Admin</h2>
+        <p class="profile-email" id="profileEmail">admin@corvis.com</p>
+
+        <section class="context-switcher" aria-labelledby="contextHeading">
+          <div class="context-label" id="contextHeading">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 7h10v10H7z"></path><path d="M4 4h10M10 4v6M20 20H10M14 14v6"></path></svg>
+            Contexto atual
+          </div>
+          <p>Você está no painel administrativo. Use a experiência de estudante para conferir como as trilhas aparecem aos usuários.</p>
+          <a href="/" class="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="3"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
+            Visualizar como estudante
+          </a>
+        </section>
+
+        <section class="profile-quick" aria-labelledby="quickHeading">
+          <h3 id="quickHeading">
+            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 20V10M12 20V4M18 20v-7"></path></svg>
+            Catálogo atual
+          </h3>
+          <p>As ações abaixo levam você às partes principais da gestão de conteúdo.</p>
+          <ul>
+            <li id="sideTrailCount">0 trilhas disponíveis</li>
+            <li id="sideModuleCount">0 módulos cadastrados</li>
+            <li>Revisar categorias e conquistas</li>
+          </ul>
+        </section>
+      </div>
+
+      <footer class="panel-footer">
+        <button type="button" class="button button-danger" id="logoutButton">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3M21 4v16h-6"></path></svg>
+          Sair da conta
+        </button>
+      </footer>
+    </aside>
+  </div>
+
+  <dialog id="deleteDialog" aria-labelledby="deleteTitle">
+    <div class="modal-body">
+      <h2 id="deleteTitle">Excluir trilha?</h2>
+      <p id="deleteText">Essa ação removerá a trilha do catálogo. Ela não poderá ser desfeita.</p>
+      <div class="modal-actions">
+        <button type="button" class="button button-secondary" id="cancelDeleteButton">Cancelar</button>
+        <button type="button" class="button button-danger" id="confirmDeleteButton">Excluir trilha</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>
+    <div>
+      <strong id="toastTitle">Ação concluída</strong>
+      <p id="toastMessage">A interface respondeu à ação selecionada.</p>
+    </div>
+  </div>
+
+  <script src="/admin/js/trilha.js?v=20260623-5"></script>
+</body>
 </html>
