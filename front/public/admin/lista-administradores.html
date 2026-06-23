@@ -1,33 +1,51 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Corvis Admin — Administradores</title>
-  <link rel="stylesheet" href="/admin/css/admin-theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <link rel="stylesheet" href="/admin/css/admin-theme.css?v=20260623-4">
 </head>
-<body class="admin-body">
-  <div id="drawer-overlay" onclick="closeDrawer()" class="admin-drawer-overlay hidden"></div>
-  <aside id="drawer" class="admin-drawer translate-x-full" aria-labelledby="drawer-title">
-    <header class="admin-drawer__head">
-      <h2 id="drawer-title">Detalhes do administrador</h2>
-      <button onclick="closeDrawer()" class="admin-drawer__close" aria-label="Fechar">&times;</button>
-    </header>
-    <div id="drawer-content" class="admin-drawer__content"></div>
-  </aside>
-  <div id="menu-container"></div>
-  <main class="admin-main">
-    <header class="admin-page-head">
-      <div>
-        <p class="admin-page-head__eyebrow">Controle de acesso</p>
-        <h1>Administradores</h1>
-        <p class="admin-page-head__description">Consulte quem possui permissão para gerenciar o conteúdo e os usuários.</p>
-      </div>
-      <span class="admin-count" id="administradores-count">Carregando...</span>
-    </header>
-    <section id="administradores-list" class="admin-grid" aria-live="polite"></section>
-  </main>
-  <script src="/admin/menu.js"></script>
-  <script src="/admin/js/administradores.js"></script>
+<!-- Overlay -->
+<div id="drawer-overlay" onclick="closeDrawer()" class="fixed inset-0 bg-black/50 hidden z-40"></div>
+
+<!-- Drawer -->
+<div id="drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 rounded-l-2xl flex flex-col">
+  <div class="flex items-center justify-between px-6 py-4 bg-gray-100 rounded-tl-2xl">
+    <h2 id="drawer-title" class="text-xl font-semibold text-gray-800">Detalhes do Administrador</h2>
+    <button onclick="closeDrawer()" class="text-gray-500 hover:text-red-600 text-2xl font-bold">&times;</button>
+  </div>
+
+  <div id="drawer-content" class="p-6 overflow-y-auto text-gray-700 space-y-4 flex-1">
+    <!-- Conteúdo dinâmico -->
+  </div>
+
+</div>
+<body class="bg-gray-200 content-center">
+    <div id="menu-container"></div>
+    <div>
+        <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 py-4 bg-green-700 text-white">
+            <h1 class="text-2xl font-bold">Administradores</h1>
+        </div>
+
+        <a href="forms/form-administrador.html"
+            class="fixed bottom-6 right-6 bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition duration-300"
+            title="Adicionar novo administrador">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+        </a>
+
+        <div id="administradores-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto py-6">
+        </div>
+
+    </div>
+    <script src="/admin/menu.js"></script>
+    <script src="/admin/js/administradores.js"></script>
 </body>
+
 </html>

@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Corvis Admin — Conquistas</title>
-  <link rel="stylesheet" href="/admin/css/admin-theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <link rel="stylesheet" href="/admin/css/admin-theme.css?v=20260623-4">
 </head>
-<body class="admin-body">
-  <div id="menu-container"></div>
-  <main class="admin-main">
-    <header class="admin-page-head">
-      <div>
-        <p class="admin-page-head__eyebrow">Gamificação</p>
-        <h1>Conquistas</h1>
-        <p class="admin-page-head__description">Acompanhe as recompensas vinculadas às trilhas e aos módulos.</p>
-      </div>
-      <span class="admin-count" id="conquistas-count">Carregando...</span>
-    </header>
-    <section id="conquistas-list" class="admin-grid" aria-live="polite"></section>
-  </main>
-  <script src="/admin/menu.js"></script>
-  <script src="/admin/js/conquistas.js"></script>
+<body class="bg-gray-200 content-center">
+    <div id="menu-container"></div>
+    <div>
+        <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 py-4 bg-green-700 text-white">
+            <h1 class="text-2xl font-bold">Conquistas</h1>
+        </div>
+
+        <div id="conquistas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto py-6">
+        </div>
+
+    </div>
+    <script src="/admin/menu.js"></script>
+    <script src="/admin/js/conquistas.js"></script>
 </body>
 </html>

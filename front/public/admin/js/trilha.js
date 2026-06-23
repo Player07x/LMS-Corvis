@@ -39,7 +39,7 @@ async function fetchTrilhas() {
               </div>
 
               <div class="flex justify-end gap-4 mt-6">
-                <a href="/admin/forms/form-trilha.html?id=${trilha.id}" class="text-indigo-600 hover:text-indigo-900 font-medium text-sm">
+                <a href="forms/form-trilha.html?id=${trilha.id}" class="text-indigo-600 hover:text-indigo-900 font-medium text-sm">
                   Editar
                 </a>
                 <a href="javascript:removerTrilha(${trilha.id})" class="text-red-600 hover:text-red-900 font-medium text-sm">
