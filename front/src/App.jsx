@@ -11,7 +11,6 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ResizableSidebarLayout from './components/layout/ResizableSidebarLayout'
 import { AuthProvider } from './contexts/AuthContext'
 import { useAuth } from './hooks/useAuth'
-import Conquistas from './pages/Conquistas'
 const PopulatePage = React.lazy(() => import('./pages/Populate'))
 
 function AppContent() {
