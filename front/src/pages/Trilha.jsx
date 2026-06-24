@@ -20,6 +20,19 @@ const strokeWidth = 6
 const radius = (size - strokeWidth) / 2
 const circumference = 2 * Math.PI * radius
 
+const normalizePercent = (value) => {
+  const numericValue = Number(value)
+  if (!Number.isFinite(numericValue)) return 0
+  return Math.min(Math.max(numericValue, 0), 100)
+}
+
+const formatPercent = (value) => {
+  return normalizePercent(value)
+    .toFixed(1)
+    .replace(/\.0$/, '')
+    .replace('.', ',')
+}
+
 // Estilos dos nós inspirados no código antigo
 const mainStyle = {
   width: 200,
@@ -100,6 +113,7 @@ export default function Trilha({ activeUser }) {
 
   // Usar o usuário ativo passado como prop ou o usuário logado
   const usuarioId = activeUser?.id || user?.id
+  const percentualConclusao = normalizePercent(progresso?.percentual)
 
   // Função para tratar o clique no nó
   const onNodeClick = useCallback((event, node) => {
@@ -567,11 +581,11 @@ export default function Trilha({ activeUser }) {
               strokeWidth={strokeWidth}
               fill="none"
               strokeDasharray={circumference}
-              strokeDashoffset={circumference * (1 - (progresso?.percentual || 0) / 100)}
+              strokeDashoffset={circumference * (1 - percentualConclusao / 100)}
               transform={`rotate(-90 ${size/2} ${size/2})`}
             />
           </svg>
-          <div className="text-green-600 font-semibold text-lg">{progresso?.percentual || 0}%</div>
+          <div className="text-green-600 font-semibold text-lg">{formatPercent(percentualConclusao)}%</div>
         </div>
       </div>
 

@@ -57,8 +57,8 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, UsuarioCre
     public AlunoDto inserir(UsuarioCreateDto dto) {
         Aluno entidade = modelMapper.map(dto, Aluno.class);
         entidade.setDataCadastro(LocalDateTime.now());
-        entidade.setNivel(0);
         entidade.setXpTotal(0);
+        entidade.setNivel(calcularNivelPorXp(entidade.getXpTotal()));
         
         entidade.setSenhaHash(Util.gerarHashMD5(dto.getSenha()));
         
@@ -84,6 +84,7 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, UsuarioCre
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
         
         entidade.setXpTotal(entidade.getXpTotal() + xpGanho);
+        entidade.setNivel(calcularNivelPorXp(entidade.getXpTotal()));
         repository.save(entidade);
         
         return modelMapper.map(entidade, AlunoDto.class);
@@ -94,8 +95,12 @@ public class AlunoService implements UsuarioAbstractService<AlunoDto, UsuarioCre
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
         
         entidade.setXpTotal(0);
+        entidade.setNivel(calcularNivelPorXp(entidade.getXpTotal()));
         repository.save(entidade);
         
         return modelMapper.map(entidade, AlunoDto.class);
+    }
+    private int calcularNivelPorXp(int xpTotal) {
+        return Math.max(1, (xpTotal / 100) + 1);
     }
 }

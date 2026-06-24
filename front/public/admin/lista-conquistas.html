@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <title>Corvis</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <link rel="stylesheet" href="/assets/css/sidebar-layout.css?v=20260623-1">
     <link rel="stylesheet" href="/admin/css/admin-theme.css?v=20260623-4">
 </head>
-<body class="bg-gray-200 content-center">
-    <div id="menu-container"></div>
-    <div>
+<body class="bg-gray-200 content-center admin-list-page">
+    <div id="admin-layout" class="app-layout app-layout--sidebar-right admin-layout">
+    <main id="content" class="app-content admin-list-content">
+    <div class="admin-page-body">
         <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 py-4 bg-green-700 text-white">
             <h1 class="text-2xl font-bold">Conquistas</h1>
         </div>
@@ -19,7 +22,10 @@
         </div>
 
     </div>
-    <script src="/admin/menu.js"></script>
+    </main>
+    <div id="sidebar-container" class="app-sidebar-container" data-sidebar-component="/admin/components/admin-sidebar.html" data-sidebar-storage-key="corvis.admin.sidebar.width"></div>
+    </div>
+    <script type="module" src="/assets/js/sidebar-loader.js?v=20260623-1"></script>
     <script src="/admin/js/conquistas.js"></script>
 </body>
 </html>

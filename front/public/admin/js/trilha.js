@@ -29,6 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchTrilhas();
 });
 
+document.addEventListener('corvis:sidebar-loaded', () => {
+  setupProfile();
+  setupSummary();
+});
+
 async function fetchTrilhas() {
   try {
     const response = await fetch('http://localhost:8080/trilha', {
@@ -71,6 +76,8 @@ function mapTrail(trilha) {
 }
 
 function setupProfile() {
+  if (!$('profileAvatar') || !$('adminProfileHeading') || !$('profileEmail')) return;
+
   const name = user?.nome || user?.name || user?.email?.split('@')[0] || 'Admin';
   const email = user?.email || 'admin@corvis.com';
   const initials = name
@@ -121,13 +128,13 @@ function bindEvents() {
   $('cancelDeleteButton').addEventListener('click', () => $('deleteDialog').close());
   $('confirmDeleteButton').addEventListener('click', confirmDelete);
 
-  $('logoutButton').addEventListener('click', () => {
+  $('logoutButton')?.addEventListener('click', () => {
     localStorage.removeItem('user');
     localStorage.removeItem('accessToken');
     window.location.href = '/login';
   });
 
-  $('collapseButton').addEventListener('click', () => {
+  $('collapseButton')?.addEventListener('click', () => {
     showToast('Painel lateral', 'Este painel permanece visível para manter o contexto administrativo da tela.');
   });
 }
@@ -136,8 +143,12 @@ function setupSummary() {
   const totalModules = state.trails.reduce((sum, trail) => sum + trail.modules.length, 0);
   $('totalTrails').textContent = state.trails.length;
   $('totalModules').textContent = totalModules;
-  $('sideTrailCount').textContent = `${state.trails.length} ${state.trails.length === 1 ? 'trilha disponível' : 'trilhas disponíveis'}`;
-  $('sideModuleCount').textContent = `${totalModules} ${totalModules === 1 ? 'módulo cadastrado' : 'módulos cadastrados'}`;
+  if ($('sideTrailCount')) {
+    $('sideTrailCount').textContent = `${state.trails.length} ${state.trails.length === 1 ? 'trilha disponivel' : 'trilhas disponiveis'}`;
+  }
+  if ($('sideModuleCount')) {
+    $('sideModuleCount').textContent = `${totalModules} ${totalModules === 1 ? 'modulo cadastrado' : 'modulos cadastrados'}`;
+  }
 
   const categories = [...new Set(state.trails.map(trail => trail.category).filter(Boolean))]
     .sort((a, b) => a.localeCompare(b, 'pt-BR'));

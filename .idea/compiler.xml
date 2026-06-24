@@ -9,7 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="gateway" />
       </profile>
-      <profile name="Annotation profile for auth" enabled="true">
+      <profile name="Annotation profile for user" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -18,8 +18,8 @@
         </processorPath>
         <module name="learning" />
         <module name="trilha" />
-        <module name="auth" />
         <module name="user" />
+        <module name="auth" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

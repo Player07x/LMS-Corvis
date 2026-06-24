@@ -4,13 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Painel administrativo de trilhas do Corvis.">
-  <title>Corvis Admin — Trilhas</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <title>Corvis</title>
+  <link rel="stylesheet" href="/assets/css/sidebar-layout.css?v=20260623-1">
   <link rel="stylesheet" href="/admin/css/lista-trilhas.css?v=20260623-5">
 </head>
 <body>
   <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
 
-  <div class="app">
+  <div id="admin-layout" class="app-layout app-layout--sidebar-right admin-layout">
+    <div id="content" class="app-content">
     <section class="workspace" aria-label="Área principal de administração">
       <header class="topbar" aria-label="Navegação do painel administrativo">
         <a class="brand" href="/admin/lista-trilhas.html" aria-label="Corvis Admin">
@@ -104,54 +107,14 @@
         </section>
       </main>
     </section>
+    </div>
 
-    <aside class="profile-panel" aria-labelledby="adminProfileHeading">
-      <button class="collapse-button" type="button" id="collapseButton" aria-label="Recolher painel de perfil" title="Recolher painel">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-      </button>
-
-      <div class="profile-content">
-        <div class="profile-avatar" id="profileAvatar" aria-label="Avatar do administrador">
-          AD
-          <span class="role-badge" aria-label="Nível administrativo">1</span>
-        </div>
-        <p class="admin-role">Administrador</p>
-        <h2 id="adminProfileHeading">Admin</h2>
-        <p class="profile-email" id="profileEmail">admin@corvis.com</p>
-
-        <section class="context-switcher" aria-labelledby="contextHeading">
-          <div class="context-label" id="contextHeading">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 7h10v10H7z"></path><path d="M4 4h10M10 4v6M20 20H10M14 14v6"></path></svg>
-            Contexto atual
-          </div>
-          <p>Você está no painel administrativo. Use a experiência de estudante para conferir como as trilhas aparecem aos usuários.</p>
-          <a href="/" class="button">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="3"></circle><path d="M5 20a7 7 0 0 1 14 0"></path></svg>
-            Visualizar como estudante
-          </a>
-        </section>
-
-        <section class="profile-quick" aria-labelledby="quickHeading">
-          <h3 id="quickHeading">
-            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 20V10M12 20V4M18 20v-7"></path></svg>
-            Catálogo atual
-          </h3>
-          <p>As ações abaixo levam você às partes principais da gestão de conteúdo.</p>
-          <ul>
-            <li id="sideTrailCount">0 trilhas disponíveis</li>
-            <li id="sideModuleCount">0 módulos cadastrados</li>
-            <li>Revisar categorias e conquistas</li>
-          </ul>
-        </section>
-      </div>
-
-      <footer class="panel-footer">
-        <button type="button" class="button button-danger" id="logoutButton">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3M21 4v16h-6"></path></svg>
-          Sair da conta
-        </button>
-      </footer>
-    </aside>
+    <div
+      id="sidebar-container"
+      class="app-sidebar-container"
+      data-sidebar-component="/admin/components/admin-sidebar.html"
+      data-sidebar-storage-key="corvis.admin.sidebar.width">
+    </div>
   </div>
 
   <dialog id="deleteDialog" aria-labelledby="deleteTitle">
@@ -173,6 +136,7 @@
     </div>
   </div>
 
+  <script type="module" src="/assets/js/sidebar-loader.js?v=20260623-1"></script>
   <script src="/admin/js/trilha.js?v=20260623-5"></script>
 </body>
 </html>

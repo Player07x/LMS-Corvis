@@ -25,6 +25,22 @@ const stepMeta = {
     }
 };
 
+function byId(elementId) {
+    return document.getElementById(elementId);
+}
+
+function getRequiredElement(elementId) {
+    const element = byId(elementId);
+    if (!element) {
+        throw new Error(`Elemento obrigatorio nao encontrado: #${elementId}`);
+    }
+    return element;
+}
+
+function getModuleListElement() {
+    return byId('moduleList') || byId('modulosList');
+}
+
 const quill = new Quill('#editor', {
     theme: 'snow',
     placeholder: 'Digite o conteúdo do módulo.',
@@ -52,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function getValue(elementId) {
-    return document.getElementById(elementId).value.trim();
+    return byId(elementId)?.value?.trim() || '';
 }
 
 function escapeHtml(value = '') {
@@ -153,7 +169,7 @@ function bindEvents() {
     document.getElementById('backButton').addEventListener('click', goBack);
     document.getElementById('addModuleButton').addEventListener('click', adicionarModulo);
     document.getElementById('clearModuleButton').addEventListener('click', resetModuleBuilder);
-    document.getElementById('moduleList').addEventListener('click', handleModuleAction);
+    getModuleListElement()?.addEventListener('click', handleModuleAction);
 
     document.querySelectorAll('[data-step-target]').forEach(step => {
         step.addEventListener('click', () => {
@@ -392,13 +408,18 @@ function removerModulo(index) {
 
 function renderModules() {
     state.modules.sort((first, second) => first.ordem - second.ordem);
-    const list = document.getElementById('moduleList');
+    const list = getModuleListElement();
     const empty = document.getElementById('moduleEmpty');
     const count = state.modules.length;
 
     document.getElementById('modulesCounter').textContent =
         `${count} ${count === 1 ? 'módulo adicionado' : 'módulos adicionados'}`;
-    empty.hidden = count > 0;
+    if (empty) empty.hidden = count > 0;
+
+    if (!list) {
+        console.error('Elemento da lista de modulos nao encontrado. Esperado #moduleList.');
+        return;
+    }
 
     list.innerHTML = state.modules.map((module, index) => {
         const achievement = module.conquista?.nome

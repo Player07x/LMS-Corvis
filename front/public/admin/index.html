@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <title>Corvis</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/assets/css/sidebar-layout.css?v=20260623-1">
+  <link rel="stylesheet" href="/admin/css/admin-theme.css?v=20260623-4">
+</head>
+<body class="bg-gray-200 content-center admin-list-page">
+  <div id="admin-layout" class="app-layout app-layout--sidebar-right admin-layout">
+    <main id="content" class="app-content admin-list-content">
+      <div class="admin-page-body">
+        <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 py-4 bg-green-700 text-white">
+          <h1 class="text-2xl font-bold">Painel administrativo</h1>
+        </div>
+
+        <section class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <a class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 hover:shadow-xl transition-shadow" href="/admin/lista-trilhas.html">
+              <h2 class="text-xl font-bold text-gray-800">Trilhas</h2>
+              <p class="text-sm text-gray-600 mt-2">Organize caminhos de aprendizagem e modulos.</p>
+            </a>
+            <a class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 hover:shadow-xl transition-shadow" href="/admin/lista-categorias.html">
+              <h2 class="text-xl font-bold text-gray-800">Categorias</h2>
+              <p class="text-sm text-gray-600 mt-2">Classifique o catalogo de estudos.</p>
+            </a>
+            <a class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 hover:shadow-xl transition-shadow" href="/admin/lista-conquistas.html">
+              <h2 class="text-xl font-bold text-gray-800">Conquistas</h2>
+              <p class="text-sm text-gray-600 mt-2">Revise recompensas e XP.</p>
+            </a>
+            <a class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 hover:shadow-xl transition-shadow" href="/admin/lista-usuarios.html">
+              <h2 class="text-xl font-bold text-gray-800">Usuarios</h2>
+              <p class="text-sm text-gray-600 mt-2">Acompanhe estudantes cadastrados.</p>
+            </a>
+            <a class="bg-white shadow-lg rounded-xl p-6 border border-gray-200 hover:shadow-xl transition-shadow" href="/admin/lista-administradores.html">
+              <h2 class="text-xl font-bold text-gray-800">Administradores</h2>
+              <p class="text-sm text-gray-600 mt-2">Gerencie pessoas administradoras.</p>
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div
+      id="sidebar-container"
+      class="app-sidebar-container"
+      data-sidebar-component="/admin/components/admin-sidebar.html"
+      data-sidebar-storage-key="corvis.admin.sidebar.width">
+    </div>
+  </div>
+
+  <script type="module" src="/assets/js/sidebar-loader.js?v=20260623-1"></script>
+</body>
+</html>
