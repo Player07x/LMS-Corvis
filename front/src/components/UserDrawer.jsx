@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { getUserConquistas } from "../services/learningApi"
 import { useAuth } from '../hooks/useAuth.js'
 import UserAvatar from "./UserAvatar"
@@ -7,6 +8,8 @@ import AchievementsBox from "./AchievementsBox"
 export default function UserDrawer({ setOpen, usuarioId: propUsuarioId }) {
   const { user, logout, updateUserTotalXP } = useAuth()
   const [conquistas, setConquistas] = useState([])
+
+  const navigate = useNavigate()
 
   const activeUser = user
   const usuarioId = propUsuarioId || activeUser?.id
@@ -59,6 +62,17 @@ export default function UserDrawer({ setOpen, usuarioId: propUsuarioId }) {
       
       <div className="w-full px-5">
         <AchievementsBox conquistas={conquistas} />
+        <div className="flex justify-center mt-3">
+          <button
+            onClick={() => {
+              navigate('/conquistas') //JP: Botão para levar para as conquistas
+              setOpen(false)
+            }}
+          className="px-4 py-2 bg-green-600 text-white rounded-full shadow-md font-semibold text-sm hover:bg-green-700 transition-colors"
+        >
+          Ver suas conquistas!
+        </button>
+        </div>
       </div>
     </div>
   )

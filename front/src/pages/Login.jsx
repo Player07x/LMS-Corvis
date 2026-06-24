@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import LoginForm from '../components/LoginForm'
 import { useAuth } from '../hooks/useAuth'
+import logomarca from '../assets/logomarca.jpg'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -32,7 +33,7 @@ export default function Login() {
 
       <div className="w-[30%] bg-gray-200 p-8 lg:p-10 rounded-l-2xl shadow-lg flex flex-col items-center space-y-6">
         <img
-          src="/src/assets/logomarca.jpg"
+          src={logomarca}
           alt="Corvis"
           className="h-32 w-32 rounded-full object-cover"
         />
