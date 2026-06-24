@@ -1,40 +1,1251 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="/logo.svg">
-    <title>Corvis</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="/admin/css/admin-theme.css?v=20260623-4">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cadastro de categoria no painel administrativo do Corvis." />
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <title>Corvis</title>
+  <link rel="stylesheet" href="/assets/css/sidebar-layout.css?v=20260623-1">
+  <style>
+    :root {
+      --tw-text-opacity: 1;
+      --bg: #0e0e0e;
+      --surface: #171717;
+      --surface-2: #1d1d1d;
+      --surface-3: #252525;
+      --green: #114f28;
+      --green-hover: #0c3d1e;
+      --green-text: rgb(22 163 74 / var(--tw-text-opacity, 1));
+      --light: #e5e7eb;
+      --soft: #c8cdd3;
+      --muted: #99a0ac;
+      --input: #374151;
+      --line: #34413a;
+      --line-strong: #526259;
+      --danger: #ff8a82;
+      --danger-bg: #351512;
+      --warning: #ffd38a;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 18px 42px rgba(0, 0, 0, .28);
+    }
 
+    * { box-sizing: border-box; }
+    html { color-scheme: dark; background: var(--bg); }
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--light);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    svg { display: block; }
+    h1, h2, h3, p { margin: 0; }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -60px;
+      left: 16px;
+      z-index: 100;
+      padding: 10px 14px;
+      border-radius: 9px;
+      background: var(--green);
+      color: var(--light);
+      font-weight: 800;
+      transition: top .16s ease;
+    }
+
+    .skip-link:focus { top: 16px; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 350px;
+      background: var(--bg);
+    }
+
+    .workspace {
+      min-width: 0;
+      padding: 0 32px 52px;
+    }
+
+    .topbar {
+      max-width: 1360px;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      margin: 0 auto;
+      border-bottom: 1px solid rgba(17, 79, 40, .9);
+    }
+
+    .brand {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green-text);
+      font-weight: 900;
+      letter-spacing: -.02em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--green);
+      color: var(--light);
+      box-shadow: 0 8px 18px rgba(17, 79, 40, .35);
+    }
+
+    .nav-scroll {
+      min-width: 0;
+      flex: 1 1 auto;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: max-content;
+    }
+
+    .nav-item {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--soft);
+      font-size: .92rem;
+      font-weight: 760;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-item:hover { background: var(--surface-2); color: var(--light); }
+
+    .nav-item[aria-current="page"] {
+      background: var(--green);
+      color: var(--light);
+      box-shadow: 0 6px 14px rgba(17, 79, 40, .25);
+    }
+
+    .topbar-actions {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .button, .icon-button {
+      min-height: 43px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      color: var(--light);
+      font-weight: 820;
+      text-decoration: none;
+      transition: background-color .14s ease, border-color .14s ease, color .14s ease, transform .14s ease;
+    }
+
+    .button:not(:disabled):active,
+    .icon-button:not(:disabled):active { transform: translateY(1px); }
+
+    .button { padding: 10px 14px; }
+    .icon-button {
+      width: 43px;
+      padding: 0;
+      border-color: var(--line);
+      background: var(--surface-2);
+    }
+
+    .icon-button:hover {
+      border-color: var(--green-text);
+      background: var(--surface-3);
+      color: var(--green-text);
+    }
+
+    .button-primary {
+      border-color: var(--green);
+      background: var(--green);
+    }
+
+    .button-primary:hover {
+      border-color: var(--green-hover);
+      background: var(--green-hover);
+    }
+
+    .button-secondary {
+      border-color: var(--line-strong);
+      background: var(--surface-2);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--green-text);
+      background: var(--surface-3);
+    }
+
+    .button-danger {
+      border-color: #9d423d;
+      background: transparent;
+      color: var(--danger);
+    }
+
+    .button-danger:hover {
+      border-color: var(--danger);
+      background: var(--danger-bg);
+      color: #ffc1bc;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid rgba(22, 163, 74, .35);
+      outline-offset: 3px;
+    }
+
+    .content {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding-top: 38px;
+    }
+
+    .breadcrumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: .9rem;
+      text-decoration: none;
+    }
+
+    .breadcrumb:hover { color: var(--green-text); }
+
+    .page-heading {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 26px;
+      padding: 20px 0 31px;
+      border-bottom: 1px solid rgba(17, 79, 40, .8);
+    }
+
+    .eyebrow {
+      margin-bottom: 10px;
+      color: var(--green-text);
+      font-size: .8rem;
+      font-weight: 900;
+      letter-spacing: .095em;
+      text-transform: uppercase;
+    }
+
+    .page-heading h1 {
+      color: var(--light);
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+
+    .page-heading h1 span { color: var(--green-text); }
+
+    .page-heading p:not(.eyebrow) {
+      max-width: 720px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .heading-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+      padding-bottom: 3px;
+    }
+
+    .summary-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--soft);
+      font-size: .83rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .summary-chip strong { color: var(--green-text); }
+
+    .insight-panel {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      margin-top: 26px;
+      padding: 16px;
+      border: 1px solid rgba(17, 79, 40, .72);
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(17, 79, 40, .3), rgba(17, 79, 40, .08));
+    }
+
+    .insight-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: var(--green);
+      color: var(--light);
+    }
+
+    .insight-panel h2 { color: var(--light); font-size: .98rem; }
+    .insight-panel p { margin-top: 3px; color: var(--soft); font-size: .88rem; }
+
+    .form-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, .72fr);
+      gap: 18px;
+      align-items: start;
+      margin-top: 24px;
+    }
+
+    .form-card,
+    .preview-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .form-card-header,
+    .preview-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px;
+      border-bottom: 1px solid var(--line);
+      background: #151515;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: rgba(17, 79, 40, .78);
+      color: var(--green-text);
+    }
+
+    .section-title h2 {
+      color: var(--light);
+      font-size: 1.08rem;
+      letter-spacing: -.02em;
+    }
+
+    .section-title p {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .field-status {
+      color: var(--green-text);
+      font-size: .78rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .form-card-body { padding: 22px 20px 20px; }
+
+    .form-group + .form-group { margin-top: 21px; }
+
+    .form-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: var(--soft);
+      font-size: .91rem;
+      font-weight: 850;
+    }
+
+    .required-mark { color: var(--green-text); }
+
+    .field-count {
+      color: var(--muted);
+      font-size: .77rem;
+      font-weight: 700;
+    }
+
+    .field-control {
+      width: 100%;
+      border: 1px solid #4b5563;
+      border-radius: 10px;
+      background: var(--input);
+      color: var(--light);
+      outline: none;
+      transition: border-color .14s ease, box-shadow .14s ease, background .14s ease;
+    }
+
+    input.field-control {
+      min-height: 48px;
+      padding: 11px 13px;
+    }
+
+    textarea.field-control {
+      min-height: 148px;
+      padding: 12px 13px;
+      resize: vertical;
+    }
+
+    .field-control::placeholder { color: var(--muted); opacity: 1; }
+
+    .field-control:hover { border-color: #64748b; }
+
+    .field-control:focus {
+      border-color: var(--green-text);
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, .22);
+    }
+
+    .field-control.is-invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(255, 138, 130, .13);
+    }
+
+    .field-help {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .79rem;
+      line-height: 1.4;
+    }
+
+    .field-error {
+      display: none;
+      margin-top: 7px;
+      color: var(--danger);
+      font-size: .79rem;
+      font-weight: 700;
+    }
+
+    .field-error.is-visible { display: block; }
+
+    .form-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--line);
+      background: #151515;
+    }
+
+    .save-note {
+      max-width: 330px;
+      color: var(--muted);
+      font-size: .78rem;
+      line-height: 1.4;
+    }
+
+    .save-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .preview-card { position: sticky; top: 20px; }
+
+    .preview-card-header > div:first-child {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .preview-card-header h2 {
+      color: var(--light);
+      font-size: 1rem;
+    }
+
+    .preview-card-header .preview-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green-text);
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, .12);
+    }
+
+    .preview-card-body { padding: 20px; }
+
+    .category-preview-icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(22, 163, 74, .36);
+      border-radius: 16px;
+      background: rgba(17, 79, 40, .42);
+      color: var(--green-text);
+    }
+
+    .preview-name {
+      display: -webkit-box;
+      overflow: hidden;
+      margin-top: 16px;
+      color: var(--light);
+      font-size: 1.28rem;
+      font-weight: 900;
+      letter-spacing: -.03em;
+      line-height: 1.18;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .preview-description {
+      display: -webkit-box;
+      overflow: hidden;
+      min-height: 62px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.5;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .preview-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 22px;
+      padding-top: 15px;
+      border-top: 1px solid var(--line);
+      color: var(--soft);
+      font-size: .82rem;
+      font-weight: 760;
+    }
+
+    .preview-footer::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green-text);
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, .12);
+    }
+
+    .tip-card {
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-2);
+    }
+
+    .tip-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--light);
+      font-size: .93rem;
+    }
+
+    .tip-card p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.48;
+    }
+
+    .profile-panel {
+      position: sticky;
+      top: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 22px 24px 24px;
+      overflow: auto;
+      border-left: 1px solid rgba(255, 255, 255, .35);
+      background: var(--light);
+      color: #111827;
+    }
+
+    .collapse-button {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      margin-left: -47px;
+      border: 0;
+      border-radius: 0 12px 12px 0;
+      background: var(--light);
+      color: #0e0e0e;
+      box-shadow: 4px 6px 16px rgba(0, 0, 0, .18);
+    }
+
+    .profile-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 24px;
+    }
+
+    .profile-avatar {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: grid;
+      place-items: center;
+      border: 5px solid var(--green-text);
+      border-radius: 50%;
+      background: #cfd4d8;
+      color: #111827;
+      font-size: 2.5rem;
+      font-weight: 950;
+      letter-spacing: -.08em;
+      box-shadow: 0 0 0 7px rgba(22, 163, 74, .12);
+    }
+
+    .role-badge {
+      position: absolute;
+      right: -7px;
+      bottom: -7px;
+      min-width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      padding: 0 7px;
+      border: 3px solid var(--light);
+      border-radius: 999px;
+      background: #0e0e0e;
+      color: var(--green-text);
+      font-size: .74rem;
+      font-weight: 950;
+    }
+
+    .admin-role {
+      margin-top: 18px;
+      color: var(--green);
+      font-size: .8rem;
+      font-weight: 900;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .profile-content h2 {
+      margin-top: 50px;
+      color: #111827;
+      font-size: 1.56rem;
+      letter-spacing: -.035em;
+      text-align: center;
+    }
+
+    .profile-email {
+      margin-top: 5px;
+      color: #5f6670;
+      font-size: .9rem;
+      text-align: center;
+    }
+
+    .context-switcher {
+      width: 100%;
+      margin-top: 30px;
+      padding: 14px;
+      border: 1px solid #9da5ac;
+      border-radius: 13px;
+      background: #f6f7f8;
+    }
+
+    .context-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #4b5563;
+      font-size: .76rem;
+      font-weight: 900;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .context-switcher p {
+      margin-top: 6px;
+      color: #374151;
+      font-size: .86rem;
+      line-height: 1.4;
+    }
+
+    .context-switcher .button {
+      width: 100%;
+      margin-top: 12px;
+      border-color: #6b7280;
+      background: #ffffff;
+      color: #111827;
+    }
+
+    .context-switcher .button:hover {
+      border-color: var(--green);
+      background: #f2fbf5;
+      color: var(--green);
+    }
+
+    .profile-quick {
+      width: 100%;
+      margin-top: 16px;
+      padding: 17px;
+      border: 1px solid #aeb6bd;
+      border-radius: 14px;
+      background: #2c2c2c;
+      color: var(--light);
+    }
+
+    .profile-quick h3 {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--light);
+      font-size: 1rem;
+    }
+
+    .profile-quick p {
+      margin-top: 8px;
+      color: #b8c0c8;
+      font-size: .86rem;
+      line-height: 1.4;
+    }
+
+    .profile-quick ul {
+      display: grid;
+      gap: 8px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .profile-quick li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #e5e7eb;
+      font-size: .85rem;
+    }
+
+    .profile-quick li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--green-text);
+    }
+
+    .panel-footer {
+      width: 100%;
+      margin-top: 24px;
+    }
+
+    .panel-footer .button { width: 100%; }
+
+    .toast {
+      position: fixed;
+      right: 374px;
+      bottom: 24px;
+      z-index: 50;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      max-width: 400px;
+      padding: 14px 16px;
+      border: 1px solid rgba(22, 163, 74, .58);
+      border-radius: 12px;
+      background: #14251a;
+      color: var(--light);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, .4);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast strong {
+      display: block;
+      color: var(--green-text);
+      font-size: .92rem;
+    }
+
+    .toast p {
+      margin-top: 2px;
+      color: var(--soft);
+      font-size: .85rem;
+    }
+
+    @media (max-width: 1220px) {
+      .app { grid-template-columns: minmax(0, 1fr) 300px; }
+      .workspace { padding-right: 22px; padding-left: 22px; }
+      .profile-panel { padding-right: 20px; padding-left: 20px; }
+      .toast { right: 324px; }
+    }
+
+    @media (max-width: 1060px) {
+      .form-layout { grid-template-columns: 1fr; }
+      .preview-card { position: static; }
+    }
+
+    @media (max-width: 980px) {
+      .app { grid-template-columns: 1fr; }
+      .workspace { padding: 0 18px 32px; }
+      .profile-panel {
+        position: static;
+        min-height: auto;
+        padding: 30px 22px 24px;
+        border-top: 1px solid #aeb6bd;
+        border-left: 0;
+      }
+      .collapse-button { display: none; }
+      .profile-content { padding-top: 0; }
+      .profile-content h2 { margin-top: 16px; }
+      .context-switcher, .profile-quick { max-width: 520px; }
+      .toast { right: 18px; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar { min-height: 72px; gap: 13px; }
+      .brand span:last-child { display: none; }
+      .topbar-actions .button-primary { padding-right: 11px; padding-left: 11px; }
+      .topbar-actions .button-primary span { display: none; }
+      .content { padding-top: 28px; }
+      .page-heading { grid-template-columns: 1fr; align-items: start; gap: 18px; }
+      .heading-actions { justify-content: flex-start; }
+      .insight-panel { grid-template-columns: auto minmax(0, 1fr); }
+      .insight-panel .button { grid-column: 1 / -1; width: 100%; }
+      .form-card-footer { flex-direction: column; align-items: stretch; }
+      .save-note { max-width: none; }
+      .save-actions { justify-content: stretch; }
+      .save-actions .button { flex: 1; }
+    }
+
+    @media (max-width: 420px) {
+      .workspace { padding-right: 14px; padding-left: 14px; }
+      .nav-item { padding-right: 9px; padding-left: 9px; }
+      .heading-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
+      .summary-chip { justify-content: center; }
+      .save-actions { display: grid; }
+      .save-actions .button { width: 100%; }
+    }
+  </style>
 </head>
+<body>
+  <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
 
-<body class="bg-gray-100 text-gray-800">
-    <div id="menu-container"></div>
+  <div id="admin-layout" class="app-layout app-layout--sidebar-right admin-layout">
+    <div id="content" class="app-content">
+    <section class="workspace" aria-label="Área principal de administração">
+      <header class="topbar" aria-label="Navegacao do painel administrativo">
+        <a class="brand" href="/admin/index.html" aria-label="Corvis Admin">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 11c3.1-4.7 8.3-6.7 14.4-5.9-.4 5.5-3.3 10.1-8.7 12.1-2.9-1.4-4.8-3.5-5.7-6.2Z"></path>
+              <path d="M9 12c2.2-1.1 4.1-2.9 5.5-5.3"></path>
+              <circle cx="15.5" cy="8.5" r=".8" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </span>
+          <span>Corvis Admin</span>
+        </a>
 
-    <div>
-        <form onsubmit="enviarFormulario(event)" class="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-            <h1 class="text-2xl font-bold mb-6">Cadastro de Trilha</h1>
+        <div class="nav-scroll">
+          <nav class="main-nav" aria-label="Secoes administrativas">
+            <a href="/admin/lista-trilhas.html" class="nav-item">Trilhas</a>
+            <a href="/admin/lista-categorias.html" class="nav-item" aria-current="page">Categorias</a>
+            <a href="/admin/lista-conquistas.html" class="nav-item">Conquistas</a>
+            <a href="/admin/lista-usuarios.html" class="nav-item">Usuarios</a>
+            <a href="/admin/lista-administradores.html" class="nav-item">Administradores</a>
+          </nav>
+        </div>
 
-            <div class="mb-4">
-                <label for="nome" class="block font-semibold">Nome:</label>
-                <input type="text" id="nome" name="nome" required class="w-full p-2 border rounded">
+        <div class="topbar-actions">
+          <button type="button" class="icon-button" id="focusSearchButton" aria-label="Pesquisar categorias" title="Pesquisar categorias">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
+          </button>
+          <a class="button button-primary" href="/admin/forms/form-categoria.html">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+            <span>Nova categoria</span>
+          </a>
+        </div>
+      </header>
+
+      <main id="conteudo-principal" class="content">
+        <a href="http://localhost:3000/admin/lista-categorias.html" class="breadcrumb">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+          Voltar para categorias
+        </a>
+
+        <section class="page-heading" aria-labelledby="pageTitle">
+          <div>
+            <p class="eyebrow">Organização do catálogo</p>
+            <h1 id="pageTitle">Nova <span>categoria</span></h1>
+            <p>Crie um agrupamento simples e reconhecível para orientar a descoberta de trilhas pelos estudantes.</p>
+          </div>
+          <div class="heading-actions" aria-label="Status do formulário">
+            <span class="summary-chip" id="formStatus"><strong>0%</strong> preenchido</span>
+          </div>
+        </section>
+
+        <section class="insight-panel" aria-labelledby="insightTitle">
+          <div class="insight-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"></path><path d="M8 9h8M8 13h8M8 17h5"></path></svg>
+          </div>
+          <div>
+            <h2 id="insightTitle">Uma categoria deve explicar o que reúne</h2>
+            <p>Prefira nomes objetivos, como “Programação” ou “Idiomas”. A descrição deve esclarecer quais trilhas pertencem a esse agrupamento.</p>
+          </div>
+          <button type="button" class="button button-secondary" id="useExampleButton">Usar exemplo</button>
+        </section>
+
+        <section class="form-layout" aria-label="Formulário de cadastro de categoria">
+          <form id="categoryForm" class="form-card" novalidate>
+            <header class="form-card-header">
+              <div class="section-title">
+                <span class="section-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v4H4zM4 14h16v4H4z"></path><path d="M7 8h.01M7 16h.01"></path></svg>
+                </span>
+                <div>
+                  <h2>Detalhes da categoria</h2>
+                  <p>Informações exibidas no catálogo administrativo.</p>
+                </div>
+              </div>
+              <span class="field-status" id="fieldsStatus">0 de 2 campos</span>
+            </header>
+
+            <div class="form-card-body">
+              <div class="form-group">
+                <label class="form-label" for="nome">
+                  <span>Nome da categoria <span class="required-mark" aria-hidden="true">*</span></span>
+                  <span class="field-count"><span id="nameCount">0</span>/60</span>
+                </label>
+                <input
+                  class="field-control"
+                  type="text"
+                  id="nome"
+                  name="nome"
+                  maxlength="60"
+                  autocomplete="off"
+                  placeholder="Ex.: Programação"
+                  aria-describedby="nomeHelp nomeError"
+                  required
+                />
+                <p id="nomeHelp" class="field-help">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 10v5M12 7h.01"></path></svg>
+                  Use um nome curto, claro e sem repetir uma categoria existente.
+                </p>
+                <p class="field-error" id="nomeError">Informe um nome para a categoria.</p>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="descricao">
+                  <span>Descrição <span class="required-mark" aria-hidden="true">*</span></span>
+                  <span class="field-count"><span id="descriptionCount">0</span>/180</span>
+                </label>
+                <textarea
+                  class="field-control"
+                  id="descricao"
+                  name="descricao"
+                  maxlength="180"
+                  placeholder="Explique quais trilhas fazem parte desta categoria."
+                  aria-describedby="descricaoHelp descricaoError"
+                  required
+                ></textarea>
+                <p id="descricaoHelp" class="field-help">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v18M3 12h18"></path></svg>
+                  Uma descrição útil facilita a escolha da categoria correta ao criar uma trilha.
+                </p>
+                <p class="field-error" id="descricaoError">Descreva a finalidade desta categoria.</p>
+              </div>
             </div>
 
-            <div class="mb-4">
-                <label for="descricao" class="block font-semibold">Descrição:</label>
-                <input type="text" id="descricao" name="descricao" required class="w-full p-2 border rounded">
+            <footer class="form-card-footer">
+              <p class="save-note">Os dois campos são obrigatórios. Revise a pré-visualização antes de salvar.</p>
+              <div class="save-actions">
+                <a class="button button-secondary" href="http://localhost:3000/admin/lista-categorias.html">Cancelar</a>
+                <button type="submit" class="button button-primary">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12l4 4L19 6"></path></svg>
+                  Salvar categoria
+                </button>
+              </div>
+            </footer>
+          </form>
+
+          <aside class="preview-card" aria-labelledby="previewTitle">
+            <header class="preview-card-header">
+              <div>
+                <span class="preview-dot" aria-hidden="true"></span>
+                <h2 id="previewTitle">Pré-visualização</h2>
+              </div>
+              <span class="field-status">Em tempo real</span>
+            </header>
+
+            <div class="preview-card-body">
+              <div class="category-preview-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v4H4zM4 14h16v4H4z"></path><path d="M7 8h.01M7 16h.01"></path></svg>
+              </div>
+              <h2 class="preview-name" id="previewName">Nome da categoria</h2>
+              <p class="preview-description" id="previewDescription">A descrição aparecerá aqui enquanto você preenche o formulário.</p>
+              <div class="preview-footer">Disponível para novas trilhas</div>
+
+              <section class="tip-card" aria-labelledby="tipTitle">
+                <h3 id="tipTitle">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V7l-8-4Z"></path><path d="m9.5 12 1.7 1.7 3.6-3.6"></path></svg>
+                  Revisão rápida
+                </h3>
+                <p>O título deve ser reconhecível no primeiro olhar e a descrição deve indicar claramente o escopo das trilhas.</p>
+              </section>
             </div>
-            
-            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">Enviar</button>
-        </form>
-        
-        <p id="cadastrada" class="mt-6 text-center font-semibold"></p>
+          </aside>
+        </section>
+      </main>
+    </section>
     </div>
-    <script src="/admin/menu.js"></script>
-    <script src="/admin/js/form-categoria.js"></script>
-</body>
 
+    <div
+      id="sidebar-container"
+      class="app-sidebar-container"
+      data-sidebar-component="/admin/components/admin-sidebar.html"
+      data-sidebar-storage-key="corvis.admin.sidebar.width">
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>
+    <div>
+      <strong id="toastTitle">Ação concluída</strong>
+      <p id="toastMessage">A interface respondeu à ação selecionada.</p>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('accessToken');
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const isEditing = !!id;
+    
+    const form = document.getElementById("categoryForm");
+    const nome = document.getElementById("nome");
+    const descricao = document.getElementById("descricao");
+    const previewName = document.getElementById("previewName");
+    const previewDescription = document.getElementById("previewDescription");
+    const nameCount = document.getElementById("nameCount");
+    const descriptionCount = document.getElementById("descriptionCount");
+    const fieldsStatus = document.getElementById("fieldsStatus");
+    const formStatus = document.getElementById("formStatus");
+    const pageTitle = document.getElementById("pageTitle");
+    const summaryChip = document.querySelector(".summary-chip");
+    let toastTimer;
+
+    function showToast(title, message) {
+      document.getElementById("toastTitle").textContent = title;
+      document.getElementById("toastMessage").textContent = message;
+      document.getElementById("toast").classList.add("is-visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => document.getElementById("toast").classList.remove("is-visible"), 4200);
+    }
+
+    function clearFieldError(input, errorId) {
+      input.classList.remove("is-invalid");
+      document.getElementById(errorId).classList.remove("is-visible");
+    }
+
+    function showFieldError(input, errorId) {
+      input.classList.add("is-invalid");
+      document.getElementById(errorId).classList.add("is-visible");
+    }
+
+    function updateProgress() {
+      const nameValue = nome.value.trim();
+      const descriptionValue = descricao.value.trim();
+      const filled = Number(Boolean(nameValue)) + Number(Boolean(descriptionValue));
+
+      nameCount.textContent = nome.value.length;
+      descriptionCount.textContent = descricao.value.length;
+      fieldsStatus.textContent = `${filled} de 2 campos`;
+      formStatus.innerHTML = `<strong>${filled * 50}%</strong> preenchido`;
+
+      previewName.textContent = nameValue || "Nome da categoria";
+      previewDescription.textContent = descriptionValue || "A descrição aparecerá aqui enquanto você preenche o formulário.";
+
+      if (nameValue) clearFieldError(nome, "nomeError");
+      if (descriptionValue) clearFieldError(descricao, "descricaoError");
+    }
+
+    function enviarFormulario(event) {
+      event.preventDefault();
+
+      const validName = Boolean(nome.value.trim());
+      const validDescription = Boolean(descricao.value.trim());
+
+      if (!validName) showFieldError(nome, "nomeError");
+      if (!validDescription) showFieldError(descricao, "descricaoError");
+
+      if (!validName || !validDescription) {
+        showToast("Revise os campos obrigatórios", "Preencha o nome e a descrição antes de salvar a categoria.");
+        (!validName ? nome : descricao).focus();
+        return;
+      }
+
+      if (!token) {
+        showToast("Erro de autenticação", "Token não encontrado. Faça login novamente.");
+        setTimeout(() => window.location.href = "/login", 1500);
+        return;
+      }
+
+      const dados = {
+        nome: nome.value.trim(),
+        descricao: descricao.value.trim()
+      };
+
+      let url = 'http://localhost:8080/trilha/categorias';
+      let metodo = 'POST';
+
+      if (id) {
+        url += '/' + id;
+        metodo = 'PUT';
+        dados.id = id;
+      }
+
+      fetch(url, {
+        method: metodo,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(dados)
+      })
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 401) throw new Error('Sessão expirada');
+            if (response.status === 403) throw new Error('Acesso negado');
+            if (response.status === 409) throw new Error('Categoria com este nome já existe');
+            throw new Error(`Erro ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Sucesso:', data);
+          showToast("Categoria salva com sucesso!", "Redirecionando para a lista de categorias...");
+          setTimeout(() => {
+            window.location.href = '/admin/lista-categorias.html';
+          }, 1500);
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          showToast("Erro ao salvar", error.message || "Não foi possível salvar a categoria. Tente novamente.");
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      if (id) {
+        pageTitle.innerHTML = 'Editar <span>categoria</span>';
+        summaryChip.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m3 12 4 4 14-14"></path></svg><strong>Edição</strong> de categoria';
+        
+        fetch('http://localhost:8080/trilha/categorias/' + id, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              if (response.status === 401) throw new Error('Sessão expirada');
+              if (response.status === 404) throw new Error('Categoria não encontrada');
+              throw new Error(`Erro ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(categoria => {
+            nome.value = categoria.nome;
+            descricao.value = categoria.descricao;
+            updateProgress();
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+            showToast("Erro ao carregar", error.message || "Não foi possível carregar a categoria.");
+            setTimeout(() => window.location.href = '/admin/lista-categorias.html', 2000);
+          });
+      }
+    });
+
+    nome.addEventListener("input", updateProgress);
+    descricao.addEventListener("input", updateProgress);
+    form.addEventListener("submit", enviarFormulario);
+
+    document.getElementById("focusSearchButton").addEventListener("click", () => {
+      nome.focus();
+      nome.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    document.getElementById("useExampleButton").addEventListener("click", () => {
+      nome.value = "Programação";
+      descricao.value = "Reúne trilhas para desenvolver fundamentos, lógica e práticas de programação.";
+      updateProgress();
+      nome.focus();
+      showToast("Exemplo aplicado", "Você pode editar o nome e a descrição antes de salvar.");
+    });
+
+    updateProgress();
+  </script>
+  <script type="module" src="/assets/js/sidebar-loader.js?v=20260623-1"></script>
+</body>
 </html>

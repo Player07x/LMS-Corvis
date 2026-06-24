@@ -84,6 +84,9 @@ services:
       context: ./front
     ports:
       - "3000:80"
+    volumes:
+      - ./front/public:/app/public
+      - ./front/src:/app/src
     depends_on:
       - gateway-service
 
