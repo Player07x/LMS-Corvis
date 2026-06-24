@@ -1,33 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Painel administrativo de categorias do Corvis.">
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <title>Corvis</title>
+  <link rel="stylesheet" href="/assets/css/sidebar-layout.css?v=20260623-1">
+  <link rel="stylesheet" href="/admin/css/lista-categorias.css?v=20260623-1">
 </head>
-<body class="bg-gray-200 content-center">
-    <div id="menu-container"></div>
-    <div>
-        <div class="mx-auto max-w-full px-4 sm:px-6 lg:px-8 py-4 bg-green-700 text-white">
-            <h1 class="text-2xl font-bold">Categorias</h1>
-        </div>
+<body>
+  <a href="#conteudo-principal" class="skip-link">Pular para o conteudo principal</a>
 
-        <a href="forms/form-categoria.html"
-            class="fixed bottom-6 right-6 bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition duration-300"
-            title="Adicionar nova categoria">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-        </a>
+  <div id="admin-layout" class="app-layout app-layout--sidebar-right admin-layout">
+    <div id="content" class="app-content">
+      <section class="workspace" aria-label="Area principal de administracao">
+        <header class="topbar" aria-label="Navegacao do painel administrativo">
+          <a class="brand" href="/admin/index.html" aria-label="Corvis Admin">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 11c3.1-4.7 8.3-6.7 14.4-5.9-.4 5.5-3.3 10.1-8.7 12.1-2.9-1.4-4.8-3.5-5.7-6.2Z"></path>
+                <path d="M9 12c2.2-1.1 4.1-2.9 5.5-5.3"></path>
+                <circle cx="15.5" cy="8.5" r=".8" fill="currentColor" stroke="none"></circle>
+              </svg>
+            </span>
+            <span>Corvis Admin</span>
+          </a>
 
-        <div id="categorias-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto py-6">
-        </div>
+          <div class="nav-scroll">
+            <nav class="main-nav" aria-label="Secoes administrativas">
+              <a href="/admin/lista-trilhas.html" class="nav-item">Trilhas</a>
+              <a href="/admin/lista-categorias.html" class="nav-item" aria-current="page">Categorias</a>
+              <a href="/admin/lista-conquistas.html" class="nav-item">Conquistas</a>
+              <a href="/admin/lista-usuarios.html" class="nav-item">Usuarios</a>
+              <a href="/admin/lista-administradores.html" class="nav-item">Administradores</a>
+            </nav>
+          </div>
 
+          <div class="topbar-actions">
+            <button type="button" class="icon-button" id="focusSearchButton" aria-label="Pesquisar categorias" title="Pesquisar categorias">
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
+            </button>
+            <a class="button button-primary" href="/admin/forms/form-categoria.html">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+              <span>Nova categoria</span>
+            </a>
+          </div>
+        </header>
+
+        <main id="conteudo-principal" class="content">
+          <a href="/" class="breadcrumb">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            Ir para área do usuário
+          </a>
+
+          <section class="page-heading" aria-labelledby="pageTitle">
+            <div>
+              <p class="eyebrow">Organizacao do catalogo</p>
+              <h1 id="pageTitle">Categorias de <span>trilhas</span></h1>
+              <p>Defina agrupamentos claros para que estudantes encontrem o conteudo certo sem precisar percorrer toda a biblioteca.</p>
+            </div>
+            <div class="heading-actions" aria-label="Resumo das categorias">
+              <span class="summary-chip"><strong id="totalCategories">0</strong> categorias cadastradas</span>
+              <a class="button button-primary" href="/admin/forms/form-categoria.html">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                Adicionar categoria
+              </a>
+            </div>
+          </section>
+
+          <section class="insight-panel" aria-labelledby="insightTitle">
+            <div class="insight-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h12v4H6zM4 10h16v10H4z"></path><path d="M8 14h8M8 17h5"></path></svg>
+            </div>
+            <div>
+              <h2 id="insightTitle">Categorias tornam a biblioteca mais facil de explorar</h2>
+              <p>Prefira nomes curtos e reconheciveis. Use a descricao para esclarecer o tipo de trilha que deve ser incluido em cada grupo.</p>
+            </div>
+            <button type="button" class="button button-secondary" id="showNamingTipButton">Ver dica de nomeacao</button>
+          </section>
+
+          <section aria-labelledby="catalogTitle">
+            <h2 id="catalogTitle" class="visually-hidden">Lista de categorias</h2>
+
+            <div class="control-bar">
+              <label class="search-field">
+                <span class="visually-hidden">Pesquisar categorias</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
+                <input id="searchInput" type="search" placeholder="Pesquisar por nome ou descricao" autocomplete="off">
+              </label>
+
+              <label>
+                <span class="visually-hidden">Ordenar categorias</span>
+                <select id="sortSelect" class="filter-select" aria-label="Ordenar categorias">
+                  <option value="recent">Ordem do catalogo</option>
+                  <option value="name-asc">Nome: A-Z</option>
+                  <option value="name-desc">Nome: Z-A</option>
+                  <option value="id-asc">ID: menor primeiro</option>
+                  <option value="id-desc">ID: maior primeiro</option>
+                </select>
+              </label>
+            </div>
+
+            <p class="result-message" id="resultMessage" aria-live="polite"></p>
+            <div class="category-grid" id="categoryGrid" aria-live="polite"></div>
+
+            <section class="empty-results" id="emptyResults" aria-labelledby="emptyTitle">
+              <h2 id="emptyTitle">Nenhuma categoria encontrada</h2>
+              <p>Tente usar outro termo de busca ou limpe a ordenacao atual.</p>
+              <button type="button" class="button button-secondary" id="clearFiltersButton">Limpar busca</button>
+            </section>
+          </section>
+        </main>
+      </section>
     </div>
-    <script src="/admin/menu.js"></script>
-    <script src="/admin/js/categoria.js"></script>
+
+    <div
+      id="sidebar-container"
+      class="app-sidebar-container"
+      data-sidebar-component="/admin/components/admin-sidebar.html"
+      data-sidebar-storage-key="corvis.admin.sidebar.width">
+    </div>
+  </div>
+
+  <dialog id="deleteDialog" aria-labelledby="deleteTitle">
+    <div class="modal-body">
+      <h2 id="deleteTitle">Excluir categoria?</h2>
+      <p id="deleteText">Essa acao removera a categoria do catalogo. Ela nao podera ser desfeita.</p>
+      <div class="modal-actions">
+        <button type="button" class="button button-secondary" id="cancelDeleteButton">Cancelar</button>
+        <button type="button" class="button button-danger" id="confirmDeleteButton">Excluir categoria</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>
+    <div>
+      <strong id="toastTitle">Acao concluida</strong>
+      <p id="toastMessage">A interface respondeu a acao selecionada.</p>
+    </div>
+  </div>
+
+  <script type="module" src="/assets/js/sidebar-loader.js?v=20260623-1"></script>
+  <script src="/admin/js/categoria.js?v=20260623-1"></script>
 </body>
 </html>

@@ -1,0 +1,134 @@
+/*
+  Tema administrativo Corvis.
+  Mantém o layout original em Tailwind e altera apenas paleta/estilo de botões,
+  seguindo a referência escura e verde do protótipo.
+*/
+
+:root {
+  --corvis-bg: #f4f7f5;
+  --corvis-panel: #0f1110;
+  --corvis-panel-soft: #151a17;
+  --corvis-green: #166534;
+  --corvis-green-strong: #0f5130;
+  --corvis-green-soft: #dcfce7;
+  --corvis-line: rgba(34, 197, 94, .22);
+}
+
+body {
+  background-color: var(--corvis-bg) !important;
+}
+
+nav.bg-green-900 {
+  background: var(--corvis-panel) !important;
+  border-bottom: 1px solid var(--corvis-line);
+}
+
+nav .shrink-0 {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+}
+
+nav .shrink-0 img {
+  display: none;
+}
+
+nav .shrink-0::before {
+  content: "";
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: .65rem;
+  background-color: var(--corvis-green);
+  background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 11.5C8.3 6.8 13.4 5 19 5.6C18.5 11.2 15.5 15.8 10 18C7.3 16.6 5.7 14.5 5 11.5Z' stroke='white' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M10 12.5C12 11.5 13.8 9.8 15.3 7.4' stroke='white' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+}
+
+nav .shrink-0::after {
+  content: "Corvis Admin";
+  color: #22c55e;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+nav .menu,
+nav a[href="/"],
+nav #btnLogout {
+  border-radius: .65rem !important;
+  font-weight: 700 !important;
+}
+
+nav .menu.bg-green-600,
+nav .menu.bg-gray-900 {
+  background: var(--corvis-green) !important;
+  color: #fff !important;
+}
+
+nav .menu.text-gray-300,
+nav a[href="/"].text-green-200 {
+  color: #f1f5f9 !important;
+}
+
+nav .hover\:bg-gray-700:hover,
+nav .hover\:bg-green-700:hover {
+  background: var(--corvis-panel-soft) !important;
+}
+
+nav #btnLogout {
+  color: #d1d5db !important;
+}
+
+.bg-green-700 {
+  background-color: var(--corvis-green-strong) !important;
+}
+
+.bg-green-600 {
+  background-color: var(--corvis-green) !important;
+}
+
+.hover\:bg-green-700:hover {
+  background-color: var(--corvis-green-strong) !important;
+}
+
+.border-green-500 {
+  border-color: #22c55e !important;
+}
+
+.text-indigo-600 {
+  color: var(--corvis-green) !important;
+}
+
+.hover\:text-indigo-900:hover {
+  color: var(--corvis-green-strong) !important;
+}
+
+a[title^="Adicionar nova"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .65rem !important;
+  padding: .85rem 1.25rem !important;
+  border-radius: .85rem !important;
+  background: var(--corvis-green) !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 14px 28px rgba(15, 81, 48, .24) !important;
+}
+
+a[title^="Adicionar nova"]:hover {
+  background: var(--corvis-green-strong) !important;
+  transform: translateY(-1px);
+}
+
+a[title="Adicionar nova trilha"]::after {
+  content: "Nova trilha";
+}
+
+a[title="Adicionar nova categoria"]::after {
+  content: "Nova categoria";
+}
+
+a[title^="Adicionar nova"] svg {
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+}

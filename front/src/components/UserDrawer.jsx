@@ -6,7 +6,7 @@ import UserAvatar from "./UserAvatar"
 import AchievementsBox from "./AchievementsBox"
 
 export default function UserDrawer({ setOpen, usuarioId: propUsuarioId }) {
-  const { user, logout } = useAuth()
+  const { user, logout, updateUserTotalXP } = useAuth()
   const [conquistas, setConquistas] = useState([])
 
   const navigate = useNavigate()
@@ -20,6 +20,7 @@ export default function UserDrawer({ setOpen, usuarioId: propUsuarioId }) {
         .then(res => {
           const conquistasData = res.data?.content || []
           setConquistas(conquistasData)
+          updateUserTotalXP?.(usuarioId)
         })
         .catch(error => {
           console.error('Error fetching conquistas:', error)
@@ -29,7 +30,7 @@ export default function UserDrawer({ setOpen, usuarioId: propUsuarioId }) {
       console.log('UserDrawer - No usuarioId, setting empty conquistas')
       setConquistas([])
     }
-  }, [usuarioId])
+  }, [usuarioId, updateUserTotalXP])
 
   return (
     <div className="h-screen w-full bg-[#E4E4E4] shadow-lg flex flex-col items-center p-7 space-y-12 relative">
@@ -41,6 +42,15 @@ export default function UserDrawer({ setOpen, usuarioId: propUsuarioId }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
         </svg>
       </button>
+
+      {activeUser && (
+        <button
+          onClick={logout}
+          className="absolute top-5 right-5 h-9 px-5 border-2 border-red-500/70 text-red-600 rounded-full bg-white/60 font-semibold hover:bg-red-500 hover:text-white transition-colors duration-300"
+        >
+          Sair
+        </button>
+      )}
       
       <UserAvatar 
         level={activeUser?.nivel || 1} 
@@ -64,15 +74,6 @@ export default function UserDrawer({ setOpen, usuarioId: propUsuarioId }) {
         </button>
         </div>
       </div>
-
-      {activeUser && (
-        <button 
-          onClick={logout} 
-          className="w-56 h-8 border-[2px] absolute bottom-10 left-1/2 -translate-x-1/2 border-red-500/70 text-red-600/80 rounded-md hover:bg-red-500/80 hover:text-white"
-        >
-          Sair
-        </button>
-      )}
     </div>
   )
 }

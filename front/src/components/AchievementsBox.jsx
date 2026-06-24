@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   TrophyIcon,
   CheckCircleIcon,
-  UserCircleIcon,
-  ChevronDownIcon,
-  ChevronUpIcon
+  UserCircleIcon
 } from '@heroicons/react/24/outline'
+import { Link } from 'react-router-dom'
 
 const iconMap = {
   trophy: <TrophyIcon className="w-6 h-6 text-yellow-500" />,
@@ -14,8 +13,6 @@ const iconMap = {
 }
 
 export default function AchievementsBox({ conquistas = [] }) {
-  const [isExpanded, setIsExpanded] = useState(false)
-  
   const conquistasArray = Array.isArray(conquistas) ? conquistas : []
   const conquistasOrdenadas = [...conquistasArray].sort((a, b) => {
     const dateA = new Date(a.dataConquista || a.data || 0)
@@ -23,8 +20,8 @@ export default function AchievementsBox({ conquistas = [] }) {
     return dateB - dateA
   })
   
-  const conquistasExibidas = isExpanded ? conquistasOrdenadas : conquistasOrdenadas.slice(0, 2)
-  const temMaisConquistas = conquistasOrdenadas.length > 2
+  const conquistasExibidas = conquistasOrdenadas.slice(0, 3)
+  const temMaisConquistas = conquistasOrdenadas.length > 3
   
   return (
     <div className="mt-4 py-4 max-w-sm flex flex-col justify-center items-center bg-black/80 border border-gray-200 rounded-xl shadow-sm overflow-hidden">
@@ -34,7 +31,7 @@ export default function AchievementsBox({ conquistas = [] }) {
         </h2>
       </div>
 
-      <div className={`w-full transition-all duration-300 ${isExpanded ? 'max-h-64 overflow-y-auto' : 'max-h-32'}`}>
+      <div className="w-full max-h-48 overflow-hidden">
         <ul className="px-2">
           {conquistasExibidas.map((item) => (
             <li
@@ -74,22 +71,12 @@ export default function AchievementsBox({ conquistas = [] }) {
       </div>
       
       {temMaisConquistas && (
-        <button 
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-3 px-4 py-2 bg-white rounded-full shadow-md text-black font-semibold text-sm flex items-center gap-2 hover:bg-gray-50 transition-colors"
+        <Link
+          to="/conquistas"
+          className="mt-3 px-5 py-2 rounded-full border border-green-500 bg-green-900/80 text-green-100 shadow-md font-semibold text-sm hover:bg-green-800 hover:text-white transition-colors"
         >
-          {isExpanded ? (
-            <>
-              Ver Menos
-              <ChevronUpIcon className="w-4 h-4" />
-            </>
-          ) : (
-            <>
-              Ver Mais ({conquistasOrdenadas.length - 2}+)
-              <ChevronDownIcon className="w-4 h-4" />
-            </>
-          )}
-        </button>
+          Ver Mais
+        </Link>
       )}
     </div>
   )

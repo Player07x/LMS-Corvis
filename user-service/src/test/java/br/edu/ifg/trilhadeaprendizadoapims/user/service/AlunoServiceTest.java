@@ -96,6 +96,7 @@ class AlunoServiceTest {
     @Test
     void deveInserirAlunoComValoresPadrao() {
         UsuarioCreateDto createDto = new UsuarioCreateDto();
+        createDto.setSenha("senha123");
         Aluno entidade = new Aluno();
         AlunoDto dtoRetorno = new AlunoDto();
 
@@ -106,10 +107,30 @@ class AlunoServiceTest {
         AlunoDto resultado = alunoService.inserir(createDto);
 
         assertNotNull(resultado);
-        assertEquals(0, entidade.getNivel());
+        assertEquals(1, entidade.getNivel());
         assertEquals(0, entidade.getXpTotal());
         assertNotNull(entidade.getDataCadastro());
         verify(repository).save(entidade);
+    }
+
+    @Test
+    void deveAdicionarXpERecalcularNivel() {
+        Long id = 1L;
+        Aluno aluno = new Aluno();
+        aluno.setXpTotal(90);
+        aluno.setNivel(1);
+        AlunoDto dtoRetorno = new AlunoDto();
+
+        when(repository.findById(id)).thenReturn(Optional.of(aluno));
+        when(repository.save(aluno)).thenReturn(aluno);
+        when(modelMapper.map(aluno, AlunoDto.class)).thenReturn(dtoRetorno);
+
+        AlunoDto resultado = alunoService.adicionarXp(id, 25);
+
+        assertNotNull(resultado);
+        assertEquals(115, aluno.getXpTotal());
+        assertEquals(2, aluno.getNivel());
+        verify(repository).save(aluno);
     }
 
     @Test

@@ -45,6 +45,7 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       DB_PASSWORD: postgres
+      GATEWAY_URL: http://gateway-service:8080
     depends_on:
       postgres:
         condition: service_healthy

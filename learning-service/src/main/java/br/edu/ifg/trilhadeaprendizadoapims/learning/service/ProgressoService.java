@@ -14,10 +14,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,6 +42,8 @@ public class ProgressoService {
     @Autowired
     private UsuarioConquistaService usuarioConquistaService;
 
+    @Value("${gateway.url:http://localhost:8080}")
+    private String gatewayUrl = "http://localhost:8080";
 
     public ProgressoDto iniciarProgresso(ProgressoCreateDto dto, String jwt){
         List<EProgresso> existingProgress = repository.findAllByUsuarioIdAndTrilhaIdOrderByDataInicioDesc(dto.getUsuarioId(), dto.getTrilhaId());
@@ -157,7 +161,7 @@ public class ProgressoService {
             usuarioConquistaService.gerarConquista(dto);
 
             try {
-                String url = String.format("http://user-service:8081/usuario/aluno/%d/add-xp", usuario_id);
+                String url = gatewayEndpoint(String.format("/usuario/aluno/%d/add-xp", usuario_id));
                 
                 String jsonBody = String.format("{\"xpGanho\": %d}", dto.getConquistaXpGanho());
                 
@@ -201,9 +205,9 @@ public class ProgressoService {
         String url;
 
         if (tipo.equals("TRILHA")) {
-            url = String.format("http://trilha-service:8083/trilha/%d/trilha-conquista-detalhada", id);
+            url = gatewayEndpoint(String.format("/trilha/%d/trilha-conquista-detalhada", id));
         } else if (tipo.equals("MODULO")) {
-            url = String.format("http://trilha-service:8083/trilha/modulo-conquista-detalhada/%d", id);
+            url = gatewayEndpoint(String.format("/trilha/modulo-conquista-detalhada/%d", id));
         }else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tipo de conquista inválido: " + tipo);
         }
@@ -224,12 +228,14 @@ public class ProgressoService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Conquista não encontrada");
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Erro ao buscar conquista: " + e.getStatusCode());
+        } catch (ResourceAccessException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Servico de trilhas indisponivel", e);
         }
 
     }
 
     public List<Long> buscarModulosPorTrilha(Long trilhaId, String jwt) {
-        String url = String.format("http://trilha-service:8083/trilha/%d/modulos-ids", trilhaId);
+        String url = gatewayEndpoint(String.format("/trilha/%d/modulos-ids", trilhaId));
 
         try {
             HttpHeaders headers = criarHeadersComJwt(jwt);
@@ -252,12 +258,20 @@ public class ProgressoService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Trilha não encontrada");
         } catch (HttpClientErrorException e) {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Erro ao buscar módulos: " + e.getStatusCode());
+        } catch (ResourceAccessException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Servico de trilhas indisponivel", e);
         }
 
     }
 
     public Boolean verificaUsuarioValido(Long usuario_id, String jwt) {
-        String url = String.format("http://user-service:8081/usuario/aluno/%d", usuario_id);
+        String alunoUrl = gatewayEndpoint(String.format("/usuario/aluno/%d", usuario_id));
+        String adminUrl = gatewayEndpoint(String.format("/usuario/admin/%d", usuario_id));
+
+        return verificaUsuarioPorEndpoint(alunoUrl, jwt) || verificaUsuarioPorEndpoint(adminUrl, jwt);
+    }
+
+    private Boolean verificaUsuarioPorEndpoint(String url, String jwt) {
 
         try {
             HttpHeaders headers = criarHeadersComJwt(jwt);
@@ -273,8 +287,12 @@ public class ProgressoService {
             return response.getStatusCode() == HttpStatus.OK;
         } catch (HttpClientErrorException.NotFound e) {
             return false;
+        } catch (HttpClientErrorException.Forbidden | HttpClientErrorException.Unauthorized e) {
+            return false;
         } catch (HttpClientErrorException e) {
-            throw new RuntimeException("Erro ao verificar usuário: " + e.getStatusCode());
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Erro ao verificar usuario: " + e.getStatusCode());
+        } catch (ResourceAccessException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Servico de usuarios indisponivel", e);
         }
     }
     
@@ -288,5 +306,16 @@ public class ProgressoService {
         return headers;
     }
 
+    private String gatewayEndpoint(String path) {
+        if (gatewayUrl.endsWith("/") && path.startsWith("/")) {
+            return gatewayUrl.substring(0, gatewayUrl.length() - 1) + path;
+        }
+
+        if (!gatewayUrl.endsWith("/") && !path.startsWith("/")) {
+            return gatewayUrl + "/" + path;
+        }
+
+        return gatewayUrl + path;
+    }
 
 }

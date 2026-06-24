@@ -1,6 +1,7 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { login as loginApi } from '../services/authApi';
 import { getUserConquistas } from '../services/learningApi';
+import { getUsuarioById } from '../services/userApi';
 
 const AuthContext = createContext();
 export { AuthContext };
@@ -24,32 +25,60 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  const updateUserTotalXP = async (userId) => {
+  const calculateLevelFromXP = (xpTotal = 0) => Math.floor(Number(xpTotal || 0) / 100) + 1;
+
+  const updateStoredUserProgress = useCallback((progressData) => {
+    setUser(prevUser => ({
+      ...prevUser,
+      ...progressData
+    }));
+
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    localStorage.setItem('user', JSON.stringify({
+      ...userData,
+      ...progressData
+    }));
+  }, []);
+
+  const updateUserTotalXP = useCallback(async (userId) => {
+    try {
+      const alunoRes = await getUsuarioById(userId);
+      const aluno = alunoRes.data || {};
+      const xpTotal = Number(aluno.xpTotal || 0);
+      const nivel = Number(aluno.nivel || calculateLevelFromXP(xpTotal));
+
+      updateStoredUserProgress({
+        xpTotal,
+        xpCalculado: xpTotal,
+        nivel
+      });
+
+      return xpTotal;
+    } catch (alunoError) {
+      console.warn('Erro ao buscar XP total do aluno, calculando pelas conquistas:', alunoError);
+    }
+
     try {
       const conquistasRes = await getUserConquistas(userId);
       const conquistas = conquistasRes.data?.content || [];
       
       const totalXP = conquistas.reduce((total, conquista) => {
-        return total + (conquista.xpGanho || 0);
+        return total + Number(conquista.conquistaXpGanho || conquista.xpGanho || conquista.xp || 0);
       }, 0);
+      const nivel = calculateLevelFromXP(totalXP);
       
-      setUser(prevUser => ({
-        ...prevUser,
+      updateStoredUserProgress({
         xpTotal: totalXP,
-        xpCalculado: totalXP
-      }));
-      
-      const userData = JSON.parse(localStorage.getItem('user') || '{}');
-      userData.xpTotal = totalXP;
-      userData.xpCalculado = totalXP;
-      localStorage.setItem('user', JSON.stringify(userData));
+        xpCalculado: totalXP,
+        nivel
+      });
       
       return totalXP;
     } catch (error) {
       console.warn('Erro ao calcular XP total:', error);
       return 0;
     }
-  };
+  }, [updateStoredUserProgress]);
 
   const login = async (credentials) => {
     const res = await loginApi(credentials);
